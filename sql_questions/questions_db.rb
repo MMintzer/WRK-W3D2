@@ -382,6 +382,7 @@ class Reply
        id = ?
     SQL
   end
+  
 end
   
 class QuestionLike 
