@@ -57,6 +57,9 @@ class User
     Reply.find_by_user_id(@id)
   end
   
+  def followed_questions 
+    QuestionFollow.followed_questions_for_user_id(@user_id)
+  end
   
 end 
 
@@ -92,6 +95,10 @@ class Question
     question.map { |datum| Question.new(datum) }
   end
   
+  def followers
+    QuestionFollow.followers_for_question_id(@question_id)
+  end
+  
   def initialize(options)
     @id = options['id']
     @title = options['title']
@@ -113,6 +120,7 @@ class QuestionFollow
   
   def self.all 
     data = QuestionDatabase.instance.execute("SELECT * FROM question_follows")
+    return nil if data.empty?
     data.map { |datum| QuestionFollow.new(datum) }
   end
   
@@ -125,13 +133,41 @@ class QuestionFollow
     WHERE
     id = ?     
     SQL
+    return nil if data.empty?
     data.map { |datum| QuestionFollow.new(datum) }
   end 
   
-  def self.followers_for_question_id(@question_id)
+  def self.followers_for_question_id(question_id)
     #this is where we stopped returning an array of followers for a question
-  end 
+      data = QuestionDatabase.instance.execute(<<-SQL, question_id)
+        SELECT
+          *
+        FROM
+          question_follows
+        JOIN 
+          users ON users.id = question_follows.question_id
+        WHERE 
+          question_id = ?
+      SQL
+      return nil if data.empty?
+      data.map { |datum| User.new(datum) }
+  end
   
+  def self.followed_questions_for_user_id(user_id)
+    data = QuestionDatabase.instance.execute(<<-SQL, user_id)
+      SELECT 
+        *
+      FROM 
+        question_follows
+      JOIN 
+        questions ON questions.question_id = question_follows.question_id
+      WHERE 
+        question_follows.user_id = ?
+    SQL
+    return nil if data.empty?
+    data.map { |datum| Question.new(datum) }
+  end
+
   def initialize(options) 
     @id = options['id']
     @question_id = options['question_id']
