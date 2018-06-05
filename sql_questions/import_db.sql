@@ -46,8 +46,8 @@ DROP TABLE IF EXISTS question_likes;
 
 CREATE TABLE question_likes(
   likes_id INTEGER PRIMARY KEY,
-  likes_user INTEGER NOT NULL,
-  question_user_id INTEGER NOT NULL,
+  likes_user INTEGER NOT NULL, --any user who liked the question
+  question_user_id INTEGER NOT NULL, --person who posted the question
   question_id INTEGER NOT NULL,
   
   FOREIGN KEY (question_user_id) REFERENCES users(id),
@@ -65,8 +65,8 @@ VALUES
 INSERT INTO 
   questions (title, body, user_id)
 VALUES 
-  ('I don''t know', 'body of the question', 1),
-  ('I don''t know 2', 'body is a wonderland', 2);
+  ('title question 1', 'body question 1', 1),
+  ('title question 2', 'body question 2', 2);
   
 INSERT INTO 
   question_follows (question_id, user_id)
