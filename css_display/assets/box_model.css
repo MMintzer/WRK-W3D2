@@ -4,6 +4,16 @@ body {
   /* If the user cannot load the Arial font, the sans-serif font is used */
   font-family: Arial, sans-serif;
   background-color: #FEFFF1;
+  width: 900px;
+  margin: 0 auto;
+}
+body section.main {
+  width: 700px;
+  display: inline-block;
+}
+
+body aside.ingredient-aside {
+  width: 180px;
 }
 
 h1 {
@@ -71,4 +81,17 @@ ol li:nth-of-type(2n) {
 h2 + .user_review {
     border-top: 1px solid black;
 }
+
+nav ul li {
+  display: inline-block;
+  padding: 20px; 
+  background-color: gold; 
+}
+
+nav { 
+  display: inline-block;  
+}
+/* ask questions about the logo not being in the nav container */
+
+
 
